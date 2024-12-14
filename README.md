@@ -8,12 +8,12 @@ El trabajo combina metodología ciéntifica y herramientas informáticas para pr
 
 **Estructura del proyecto**
 
-+ Analisis_hominidos_poyato_ridruejo.Rmd: archivo en formato R Markdown que contiene el código fuente del análisis, incluyendo explicaciones y generación de gráficos.
-+ Analisis_hominidos_poyato_ridruejo.md: documento en formato Markdown que proporciona un análisis detallado y contextualizado del estudio de los homínidos, permite la visualización del proyecto desde la plataforma github.
-+ Analisis_hominidos_poyato_ridruejo_files (carpeta): conjunto de imágenes correspondientes a las gráficas y tablas generadas en el proyecto,sin esta carpeta no podríamos visualizar las representaciones gráficas en github.
-+ Evolution_DataSets.csv: conjunto de datos en formato CSV que contiene información sobre las especies de homínidos y sus características evolutivas. Este archivo se utiliza como entrada para el análisis.
-+ Libreries.bib: archivo de bibliografía en formato BibTeX, que contiene las referencias bibliográficas citadas en el proyecto. Incluye el artículo del cuál se extrajo el data set.
-+ Articles.bib: archivo de bibliografía adicional que incluye las referencias sobre las bibliotecas y herramientas de software utilizadas en el proyecto, como R, ggplot2, dplyr, y otras herramientas estadísticas.
++ **Analisis_hominidos_poyato_ridruejo.Rmd**: archivo en formato R Markdown que contiene el código fuente del análisis, incluyendo explicaciones y generación de gráficos.
++ **Analisis_hominidos_poyato_ridruejo.md**: documento en formato Markdown que proporciona un análisis detallado y contextualizado del estudio de los homínidos, permite la visualización del proyecto desde la plataforma github.
++ **Analisis_hominidos_poyato_ridruejo_files (carpeta)**: conjunto de imágenes correspondientes a las gráficas y tablas generadas en el proyecto,sin esta carpeta no podríamos visualizar las representaciones gráficas en github.
++ **Evolution_DataSets.csv**: conjunto de datos en formato CSV que contiene información sobre las especies de homínidos y sus características evolutivas. Este archivo se utiliza como entrada para el análisis.
++ **Libreries.bib**: archivo de bibliografía en formato BibTeX, que contiene las referencias bibliográficas citadas en el proyecto. Incluye el artículo del cuál se extrajo el data set.
++ **Articles.bib**: archivo de bibliografía adicional que incluye las referencias sobre las bibliotecas y herramientas de software utilizadas en el proyecto, como R, ggplot2, dplyr, y otras herramientas estadísticas.
 
 **Autores**
 + Isabel Poyato Sequeira (b12posei@uco.es)
