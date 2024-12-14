@@ -2,7 +2,7 @@
 
 **Descripción**
 
-El siguiente proyecto se centra en el analísis de los homínidos y sus características evolutivas clave. Mediante distintas herramientas de código y visualizaciones, se exploran patrones evolutivos y otros aspectos importantes de los antepasados humanos.
+El siguiente proyecto se centra en el analísis de los homínidos y sus características evolutivas clave. Mediante distintas herramientas de código y visualizaciones gráficas, se exploran patrones evolutivos y otros aspectos importantes de los antepasados humanos.
 
 El trabajo combina metodología ciéntifica y herramientas informáticas para producir un análisis reproducible y claro, esto lo hace ideal para estudiantes, investigadores y cualquier persona interesada en la evolución humana.
 
