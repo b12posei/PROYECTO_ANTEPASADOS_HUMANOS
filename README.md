@@ -1,6 +1,7 @@
 # PROYECTO_ANTEPASADOS_HUMANOS
 
 **Descripción**
+
 El siguiente proyecto se centra en el analísis de los homínidos y sus características evolutivas clave. Mediante distintas herramientas de código y visualizaciones, se exploran patrones evolutivos y otros aspectos importantes de los antepasados humanos.
 
 El trabajo combina metodología ciéntifica y herramientas informáticas para producir un análisis reproducible y claro, esto lo hace ideal para estudiantes, investigadores y cualquier persona interesada en la evolución humana.
@@ -12,12 +13,14 @@ El trabajo combina metodología ciéntifica y herramientas informáticas para pr
 + Ana Ridruejo Luque (b12rilua@uco.es)
 
 **Características**
+
 + Analísis de datos sobre homínidos.
 + Representación y relación entre variables, mediante representaciones gráficas.
 + Uso de Rmarkdown para reproducibilidad.
 + Contenido accesible y adaptado a distintos niveles académicos.
 
 **Requisitos**
+
 Para poder ejecutar el proyecto, asegurate de instalar
 + Software:
 R (v4.0 o superior) y RStudio
@@ -25,6 +28,7 @@ R (v4.0 o superior) y RStudio
 rmarkdown y otras librerías como ggplot2, dplyr, knitr...
 
 **Cómo ejecutar el proyecto**
+
 + Clona este repositorio en tu equipo local:
 git clone <URL-del-repositorio>
 + Abre el archivo: Analisis_hominidos_poyato_ridruejo.Rmd, en RStudio.
@@ -32,10 +36,13 @@ git clone <URL-del-repositorio>
 + Abre el archivo html generado en un navegador web para explorarlo.
 
 **Licencia**
+
 Este proyecto está licenciado bajo la LicenciaMIT. Lo que significa que este puede usarse, modificarse y distribuirse, siempre y cuándo se mantenga la atribución original.
 
 **Uso y contribución**
+
 Puedes utilizar este proyecto con fines educativos o académicos. Si deseas mejorar o expandir este proyecto no dudes en hacerlo.
 
 **Contacto**
+
 Si tienes dudas o comentarios sobre este proyecto no dudes en contactar con nosotras: b12posei@uco.es o b12rilua@uco.es
