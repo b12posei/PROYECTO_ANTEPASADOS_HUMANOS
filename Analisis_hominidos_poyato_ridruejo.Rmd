@@ -1,0 +1,381 @@
+---
+title: "Los antepasados humanos"
+author: "Isabel Poyato Sequeira b12posei@uco.es, Ana Ridruejo Luque b12rilua@uco.es"
+date: "`r Sys.Date()`"
+output:
+  github_document: 
+    toc: true
+    toc_depth: 2
+bibliography: ["libraries.bib", "article.bib"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cargar-librerias, echo=FALSE, message=FALSE, warning=FALSE}
+library('dplyr')
+library('ggplot2')
+```
+
+```{r leer-datos, echo=FALSE}
+mydata <- read.csv("Evolution_DataSets.csv", row.names = NULL)
+```
+
+
+## 1. Contexto e Importancia
+
+La **evolución humana** es uno de los campos más fascinantes y complejos de la biología, que nos **permite entender cómo los seres humanos modernos hemos llegado a ser lo que somos hoy**. Este proceso evolutivo está marcado por una serie de adaptaciones, cambios morfológicos y comportamentales que nos distinguen de otros primates. En este contexto, **el análisis de los homínidos**, nuestros ancestros y parientes más cercanos, **juega un papel fundamental en la reconstrucción de nuestra historia**.
+
+En este trabajo, se utiliza un conjunto de datos que cubre una amplia gama de características de diversas especies de homínidos, abarcando desde los primeros ancestros humanos hasta el *Homo sapiens* moderno. Con `r nrow(mydata)` filas y `r ncol(mydata)` columnas, el dataset proporciona información detallada sobre una variedad de variables, incluyendo características morfológicas como la capacidad craneal, la forma de los caninos, y el dimorfismo sexual, así como aspectos ecológicos y de comportamiento como la dieta, la migración, y el uso de herramientas tecnológicas.
+
+**El propósito de este análisis es explorar las relaciones entre estas diferentes variables para obtener una visión más profunda de la evolución humana.** Al investigar cómo las características biológicas y ecológicas de los homínidos se interrelacionan, este conjunto de datos ofrece una oportunidad única para comprender mejor los procesos que impulsaron el desarrollo de los primeros humanos, desde sus adaptaciones físicas hasta los avances tecnológicos que marcaron su historia.Además también explora cómo factores como la ubicación geográfica, la dieta, y las migraciones podrían haber influido en el desarrollo de estas especies. 
+
+## 2. Objetivos
+
+Los objetivos de este trabajo son:
+
+1. **Objetivo General**: Analizar las relaciones entre las características biológicas y ecológicas de las especies de homínidos.
+
+2. **Objetivos Específicos**:
+   + Evaluar si las especies de homínidos presentan variaciones significativas en su capacidad craneal en función de la zona que habitaban.
+   
+   + Evaluar si las especies de homínidos con mayor capacidad craneal desarrollaron tecnologías avanzadas.
+   
+   + Establecer la relación entre la migración y dieta de las distintas especies de homínidos.
+   
+   
+
+## 3. Análisis conjunto de datos
+Los datos de este proyecto fueron descargados desde [kaggle](https://www.kaggle.com). El conjunto de datos está compuesto por `r nrow(mydata)` filas y `r ncol(mydata)` columnas que describen características de diversas especies de homínidos. Las columnas principales incluyen información sobre:
+
++ **Identidad y clasificación**: *Genus&Specie* (especie y género).
+
++ **Temporalidad y geografía**: *Time* (millones de años), *Location, Zone ,Courrent_Country ,Habitat* (distribución geográfica).
+
++ **Morfología**: *Cranial_capacity*,*Height*
+
++ **Características anatómicas**: *Incisor_size , Jaw_shape, Prognathism, Skeleton*.
+
++ **Comportamiento y locomoción**: *Diet, Biped, Arms, Foot, Migrated*
+
+Los datos se pueden dividir principalmente en dos tipos:
+
++ **Datos númericos** : 3 de las 28 columnas proporcionan datos cuantitativos.
+  + Time
+  + Cranial_Capacity
+  + Height
+  
++ **Datos categóricos** : 25 de las 28 columnas proporcionan datos cualitativos.
+  + Zone
+  + Habitat
+  + Country
+  + Incisor_Size
+  + ect
+
+## 4. Hipótesis
+
+## **4.1. Hipótesis 1:La capacidad craneal de las distintas especies de homínidos presenta variaciones significativas en función de la zona geográfica en la que habitaron.**
+
++  **Hipótesis nula (H~0~)**: La capacidad craneal de las distintas especies de homínidos no presenta variaciones significativas en función de la zona geográfica en la que habitaron.
+
++ **Hipótesis alternativa (H~1~)**: La capacidad craneal de las distintas especies de homínidos presenta variaciones significativas en función de la zona geográfica en la que habitaron. 
+
+Para analizar la relación entre la capacidad craneal y la zona geográfica en las especies de homínidos, se han establecido las siguientes relaciones:
+
++ **Generación de una tabla**: la siguiente tabla muestra un filtrado de las 10 primeras filas, de las columnas *Genus_._Spice*, *Craneal_capacity* y *Zone*, esto nos permite observar los datos en bruto y explorar patrones iniciales de asociación entre las variables:
+
+```{r, echo=FALSE}
+cranial_zone_table <- mydata %>%
+  select(Genus_._Specie, Cranial_Capacity, Zone)
+```
+
+```{r, echo=FALSE}
+knitr::kable(head(cranial_zone_table, 10), 
+             caption = "Tabla: Género/Especie, Capacidad Craneal y Zone (Muestra)")
+```
+**Tabla 1:** Muestra un filtrado de las diez primeras filas de las variables Género y Especie, Capacidad craneal y zona. Fue generada con el paquete knitr [@R-knitr; @knitr2015; @knitr2014].
+
++ **Histograma**: Este histograma proporciona una representación visual de la distribución de la capacidad craneal de las especies de homínidos incluidas en nuestro dataset. En el eje X se muestra el rango de valores de la variable: *Craneal_Capacity* (medida cm³), mientras que en el eje Y se representa la frecuencia de especies que tienen capacidades craneales dentro de cada intervalo.
+
+```{r, echo=FALSE}
+ggplot(mydata, aes(x = Cranial_Capacity)) +
+  geom_histogram(binwidth = 50, fill = "lightgreen", color = "black", alpha = 0.7) +
+  labs(
+    title = "Distribución de la Capacidad Craneal",
+    x = "Capacidad Craneal (cm³)",
+    y = "Frecuencia"
+  )
+```
+**Figura 1:** Muestra un histograma que relaciona la variable capacidad craneal y la variable género y especie. Fue generado con la librería ggplot2 [@R-ggplot2; @ggplot22016].
+
+**Interpretación:** El histograma muestra una evidente variabilidad en la capacidad craneal de las especies analizadas en el estudio. Se observa que las frecuencias más altas corresponden a capacidades craneales más bajas, lo que esta relacionado con especies más antiguas. En contraste, las capacidades craneales más elevadas, aunque menos comunes, representan a especies más recientes con mayores habilidades cognitivas.
+
++ **Gráfico barras apiladas**: El siguiente gráfico representa cómo se distribuyen las distintas especies de homínidos con respecto a las distintas zonas geográficas. En el eje X se encuentran las especies, mientras que el eje Y muestra la proporción relativa de cada zona. El color que predomina en la barra, indica que esa especie está mayoritariamente asociada a esa zona geógrafica.
+
+```{r, echo=FALSE}
+ggplot(mydata, aes(x = Genus_._Specie, fill = Zone)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Frecuencia de especies por zona geográfica",
+       x = "Especie",
+       y = "Frecuencia",
+       fill = "Zona geográfica")
+```
+**Figura 2:** Muestra un gráfico de barras que relaciona la variable zona y la variable género y especie. Fue generado con la librería ggplot2 [@R-ggplot2; @ggplot22016].
+
+**Interpretación:** El gráfico muestra una relación clara donde las especies más antiguas *Australophitecus* y *Paranthropus* estaban más restringidas a zonas específicas (oriental y sur), mientras que las especies más avanzadas, especialmente las del género *Homo* tuvieron una distribución más amplia abarcando otras zonas como central y oeste.
+
++ **Box plot**: A continuación, observamos un gráfico de cajas (geom_boxplot) que nos permite establecer una relación entre las variables *Cranial_Capacity y Zone*. Este tipo de gráfico nos es útil para visualizar la distribución de la capacidad craneal en función de la zona geográfica que habitaban las distintas especies de homínidos, lo que nos permite observar si existe alguna tendencia o diferencia significativa entre las distintas especies.
+
+```{r, echo=FALSE}
+ggplot(mydata, aes(x = Zone, y = Cranial_Capacity)) +
+  geom_boxplot(fill = "lightgreen") +
+  labs(title = "Capacidad Craneal según la zona geográfica",
+       x = "Zona Geográfica", y = "Capacidad Craneal (cm³)")
+```
+**Figura 3:** Muestra un gráfico de cajas que relaciona la variable capacidad craneal y la variable zona. Fue generado con la librería ggplot2 [@R-ggplot2; @ggplot22016].
+
+**Interpretación:** Este gráfico indica una variación significativa en base a la zona georáfica, con valores más altos en las regiones central y oeste, siendo estas zonas las que pertenecen a las especies del género *Homo*, lo que indica que estas especies tendrían cerebros más grandes. Mientras que en las zonas sur y oriental los valores de capacidad craneal son más bajo, correspondiendo a las zonas donde habitaban *Australophitecus* y *Paranthropus*
+
++ **Analísis estadístico**: Mediante la realización de una prueba de **ANOVA** comprobaremos si estas diferencias son verdaderamente  significativas. Esto nos permitirá evaluar la hipótesis nula y su validez en función del p valor.
+
+```{r, echo=FALSE}
+anova_result <- aov(Cranial_Capacity ~ Zone, data = mydata)
+```
+
+```{r, echo=FALSE}
+summary(anova_result)
+```
++ **Resultados**: El resultado del **ANOVA** nos indica si existe una diferencia estadísticamente significativa entre la capacidad craneal y la zona que habitaron las distintas espeies de homínidos:
+  + Si el **p valor es menor que 0,05** se rechaza la hipótesis nula y se acepta la alternativa, concluyendo así que si existe una  relación significativa entre las variables. 
+  + Si el **p valor es mayor que 0,05** se acepta la hupótesis nula y se rechaza la alternativa, concluyendo que no exite relación significativa entre las variables.
+  
+En este caso dado que el p valor es menor que 0,05 (p <2e-16) rechazamos la hipótesis nula, lo que significa que sí existe una relación significativa entre la capacidad craneal y las distintas zonas que habitan las especies de homínidos estudiadas.
+
+**En definitiva**: La capacidad craneal de las distintas especies de homínidos presenta variaciones significativas en función de la zona geográfica en la que habitaron.
+
+
+## **4.2. Hipótesis 2**: **Las especies de homínidos con mayor capacidad craneal eran más propensas a desarrollar tecnologías avanzadas.**
+
++  **Hipótesis nula (H~0~)**: No existe una relación significativa entre la capacidad craneal y el desarrollo de tecnologías avanzadas en las especies de homínidos.
+
++ **Hipótesis alternativa (H~1~)**: Las especies de homínidos con mayor capacidad craneal tienen más probabilidades de desarrollar tecnologías avanzadas.
+
+Para analizar la relación entre la capacidad craneal y el desarrollo de tecnologías en las especies de homínidos, se han establecido las siguientes relaciones:
+
++ **Generación de una tabla**: la siguiente tabla muestra un filtrado de las 10 primeras filas, de las columnas *Genus_._Spice*, *Craneal_capacity* y *Tecno*, esto nos permite observar los datos en bruto y explorar patrones iniciales de asociación entre las variables:
+
+```{r, echo=FALSE}
+cranial_tecno_table <- mydata %>%
+  select(Genus_._Specie, Cranial_Capacity, Tecno)
+```
+
+```{r, echo=FALSE}
+knitr::kable(head(cranial_tecno_table, 10), 
+             caption = "Tabla: Género/Especie, Capacidad Craneal y Tecnologías (Muestra)")
+```
+**Tabla 1:** Muestra un filtrado de las diez primeras filas de las variables Género y Especie, Capacidad craneal y tecno. Fue generada con el paquete knitr [@R-knitr; @knitr2015; @knitr2014].
+
++ **Histograma**: Este histograma proporciona una representación visual de la distribución de la capacidad craneal de las especies de homínidos incluidas en nuestro dataset. En el eje X se muestra el rango de valores de la variable: *Craneal_Capacity* (medida cm³), mientras que en el eje Y se representa la frecuencia de especies que tienen capacidades craneales dentro de cada intervalo.
+
+```{r, echo=FALSE}
+ggplot(mydata, aes(x = Cranial_Capacity)) +
+  geom_histogram(binwidth = 50, fill = "skyblue", color = "black", alpha = 0.7) +
+  labs(
+    title = "Distribución de la Capacidad Craneal",
+    x = "Capacidad Craneal (cm³)",
+    y = "Frecuencia"
+  )
+```
+**Figura 1:** Muestra un histograma que relaciona la variable capacidad craneal y la variable género y especie. Fue generado con la librería ggplot2 [@R-ggplot2; @ggplot22016].
+
+**Interpretación:** El histograma muestra una evidente variabilidad en la capacidad craneal de las especies analizadas en el estudio. Se observa que las frecuencias más altas corresponden a capacidades craneales más bajas, lo que esta relacionado con especies más antiguas. En contraste, las capacidades craneales más elevadas, aunque menos comunes, representan a especies más recientes con mayores habilidades cognitivas. 
+
++ **Gráfico barras apiladas**: El siguiente gráfico representa cómo se distribuyen los distintos níveles de tecnología entre las especies de homínidos. En el eje X se encuentran las especies, mientras que el eje Y muestra la proporción relativa de cada nivel tecnológico. El color que predomina en la barra, indica que esa especie está mayoritariamente asociada a ese nivel tecnológico.
+
+```{r, echo=FALSE}
+ggplot(mydata, aes(x = Genus_._Specie, fill = Tecno)) +
+  geom_bar(position = "fill", color = "black") +
+  labs(title = "Distribución de Tecnología por Género/Especie",
+       x = "Género/Especie",
+       y = "Proporción",
+       fill = "Tecnología") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_brewer(palette = "Pastel1")
+```
+**Figura 2:** Muestra un gráfico de barras que relaciona la variable tecno y la variable género y especie. Fue generado con la librería ggplot2 [@R-ggplot2; @ggplot22016].
+
+**Interpretación:** En el gráfico de barras apiladas se observa que las especies más recientes, pertenecientes al género *Homo*, están asociadas con el uso de tecnologías más avanzadas. En contraste, las especies de géneros más antiguos, como *Australopithecus* y *Paranthropus*, muestran una relación predominante con tecnologías más rudimentarias, reflejando una evolución en el desarrollo tecnológico a lo largo del tiempo.
+
++ **Box plot** : A continuación, observamos un gráfico de cajas (geom_boxplot) que nos permite establecer una relación entre las variables *Cranial_Capacity y Tecno*. Este tipo de gráfico nos es útil para visualizar la distribución de la capacidad craneal en función de los diferentes niveles tecnológicos, lo que nos permite observar si existe alguna tendencia o diferencia significativa entre las especies con diferentes niveles de tecnología.
+
+```{r convertir-variables, echo=FALSE}
+mydata$Tecno <- as.factor(mydata$Tecno)
+mydata$Cranial_Capacity <- as.numeric(mydata$Cranial_Capacity)
+```
+
+```{r grafico, echo=FALSE}
+ggplot(mydata, aes(x = Tecno, y = Cranial_Capacity)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Relación entre Capacidad Craneal y Tecnología",
+       x = "Presencia de Tecnología", y = "Capacidad Craneal (cm³)")
+```
+**Figura 3:** Muestra un gráfico de cajas que relaciona la variable capacidad craneal y la variable tecno. Fue generado con la librería ggplot2 [@R-ggplot2; @ggplot22016].
+
+**Interpretación:** El box plot indica una posible relación positiva entre un mayor tamaño de la capacidad craneal y la presencia de tecnologías avanzadas, lo que respalda la hipótesis planteada. Sin embargo, la variabilidad observada en el grupo "yes" sugiere que podrían estar interviniendo otros factores que influyen en el desarrollo tecnológico de las especies. Para confirmar si estas diferencias son estadísticamente significativas, a continuación realizaremos una prueba ANOVA.
+
++ **Analísis estadístico**: En primer lugar, realizaremos una prueba de **ANOVA** para comprobar si existen diferencias significativas en la capacidad craneal (*Cranial_Capacity*) entre los distintos niveles de tecnología (*Tecno*). Esto nos permitirá evaluar la hipótesis nula y su validez en función del p valor.
+
+```{r, echo=FALSE}
+anova_result <- aov(Cranial_Capacity ~ Tecno, data = mydata)
+```
+
+```{r, echo=FALSE}
+summary(anova_result)
+```
++ **Resultados**: El resultado del **ANOVA** nos indica si existe una diferencia estadísticamente significativa entre la capacidad craneal y el uso de las tecnologías:
+  + Si el **p valor es menor que 0,05** se rechaza la hipótesis nula y se acepta la alternativa, concluyendo así que si existe una  relación significativa entre las variables. 
+  + Si el **p valor es mayor que 0,05** se acepta la hupótesis nula y se rechaza la alternativa, concluyendo que no exite relación significativa entre las variables.
+
+En este caso, dado que el p valor es menor que 0,05 (p < 2e-16), rechazamos la hipótesis nula, lo que significa que sí existe una relación significativa entre la capacidad craneal y el desarrollo de tecnologías avanzadas en las especies de homínidos estudiadas.
+
+**En definitiva**: Las especies de homínidos con mayor capacidad craneal eran más propensas a desarrollar tecnologías avanzadas.
+
+## **4.3. Hipótesis 3:  La migración de especies se asocia con cambios significativos en la dieta.**
+
++  **Hipótesis nula (H~0~)**:  No existe una relación significativa entre la migración de las especies y los cambios en la dieta.
+
++ **Hipótesis alternativa (H~1~)**:  No existe una relación significativa entre la migración de las especies y los cambios en la dieta.
+
+Para analizar la relación entre la migración de las especies y los cambios en la dieta, se han establecido las siguientes relaciones:
+
++ **Generación de una tabla**: La siguiente tabla muestra un filtrado de las 10 primeras filas de las columnas *Migrated* y *Diet*, esto nos permite observar los datos en bruto y explorar patrones iniciales de asociación entre las variables:
+
+```{r, echo=FALSE}
+migration_diet_table <- mydata %>%
+  select(Genus_._Specie, Migrated, Diet)
+```
+
+```{r, echo=FALSE}
+knitr::kable(head(migration_diet_table, 10), 
+             caption = "Tabla: Género/Especie, Migración y Dieta (Muestra)")
+```
+**Tabla 1:** Muestra un filtrado de las diez primeras filas de las variables Género y Especie, migración y dieta. Fue generada con el paquete knitr [@R-knitr; @knitr2015; @knitr2014].
+
++ **Tabla de contingencia 1**: Esta tabla muestra el número de individuos para cada combinación de *Genus_._Specie* y *Migrated*. En las filas de la tabla, encontramos las diferentes especies de homínidos, y en las columnas se indica cuántos individuos en cada especie migraron (yes) y cuántos no migraron (no).
+
+
+```{r, echo=FALSE}
+mydata_clean <- mydata %>%
+  filter(!is.na(Genus_._Specie) & !is.na(Migrated))
+```
+
+
+```{r, echo=FALSE}
+table_genus_migrated <- table(mydata$Genus_._Specie, mydata$Migrated)
+```
+
+```{r, echo=FALSE}
+knitr::kable(table_genus_migrated, caption = "Tabla de Contingencia: Migración por Género/Especie")
+
+```
+**Tabla 2:** Esta tabla de contingencia genera una matriz de frecuencias entre las variables categóricas género&especie y dieta . Fue generada con el paquete knitr [@R-knitr; @knitr2015; @knitr2014].
+
+**Interpretación:** La tabla de contingencia muestra patrones claros de migración que podrían indicar una relación entre el género de homínidos y su comportamiento migratorio. Las especies del género Homo, particularmente aquellas como *Homo Erectus* y *Homo Sapiens*, parecen ser las que más migraron, mientras que las especies más antiguas del género *Australopithecus* y *Paranthropus* no muestran evidencia de migración. Este análisis sugiere que la migración podría haber sido un factor evolutivo significativo en la supervivencia y expansión de las especies del género Homo.
+
++ **Tabla de contingencia 2** : La siguienete tabla de contingencia proporciona información sobre la relación entre las especies de homínidos y sus dietas. Cada fila corresponde a la variable *Genus&Spices* específico de homínidos, y cada columna representa una categoría de dieta *(carnivorous, dry fruits, hard fruits, omnivore, soft fruits)*.
+
+```{r, echo=FALSE}
+mydata_clean_diet <- mydata %>%
+  filter(!is.na(Genus_._Specie) & !is.na(Diet))
+```
+
+```{r, echo=FALSE}
+mydata_clean_diet <- mydata %>%
+  filter(!is.na(Genus_._Specie) & !is.na(Diet))
+```
+
+```{r, echo=FALSE}
+table_genus_diet <- table(mydata_clean_diet$Genus_._Specie, mydata_clean_diet$Diet)
+```
+
+
+```{r, echo=FALSE}
+knitr::kable(table_genus_diet, caption = "Tabla de Contingencia: Dieta por Género/Especie")
+```
+**Tabla 3:** Esta tabla de contingencia genera una matriz de frecuencias entre las variables categóricas género&especie y dieta . Fue generada con el paquete knitr [@R-knitr; @knitr2015; @knitr2014].
+
+**Interpretación:** En las primeras especies de homínidos, como los *Australopithecus*, la dieta parece estar más centrada en frutas, mientras que las especies más recientes de *Homo* presentan una dieta más flexible, que incluye una mezcla de vegetales y carne. Esto podría reflejar el cambio en la capacidad de los homínidos para cazar, recolectar y procesar una mayor variedad de alimentos.
+
+Es posible que la dieta omnívora de los géneros *Homo* haya sido un factor importante en la expansión de estos homínidos en diferentes tipos de hábitats y su evolución hacia especies más complejas.
+
++ **Gráfico de barras**: A continuación, se genera un gráfico de cajas (geom_boxplot) que nos permite establecer una relación entre las variables *Diet y Migrated*. Este tipo de gráfico nos permitirá visualizar si existe alguna relación significativa entre la expasión y la migración de las distintas especies y su dieta.
+
+```{r, echo=FALSE}
+mydata$Diet <- as.factor(mydata$Diet)
+mydata$Migrated <- as.factor(mydata$Migrated)
+```
+
+```{r, echo=FALSE}
+ggplot(mydata, aes(x = Diet, fill = Migrated)) +
+  geom_bar(position = "stack") +
+  labs(title = "Relación entre Dieta y Migración",
+       x = "Dieta", y = "Número de Especies") +
+  scale_fill_manual(values = c("lightblue", "salmon")) +
+  theme_minimal()
+```
+**Figura 1:** Muestra un gráfico de cajas que relaciona las variables dieta y migración. Fue generado con la librería ggplot2 [@R-ggplot2; @ggplot22016]
+
+**Interpretación:** El gráfico muestra que las especies del género *Homo* con una dieta omnívora presentan una mayor proporción de especies migratorias, lo que sugiere una mayor flexibilidad alimentaria y una capacidad superior de adaptación a distintos entornos, factores que probablemente fueron clave en su expansión. Por otro lado, los géneros más antiguos, como *Australopithecus* y *Paranthropus*, cuya dieta se basa principalmente en frutas, migraron en menor medida. Esto podría indicar que una dieta más restringida limitó su capacidad para desplazarse, ya que dependían de entornos específicos donde los frutos eran accesibles.
+
++ **Analísis estadístico**:En primer lugar, realizaremos una prueba de **Chi-cuadrado** para comprobar si existe una asociación significativa entre las variables categóricas: migración y dieta. Esto nos permitirá evaluar la hipótesis nula y su validez en función del p valor.
+  + Si el **p valor es menor que 0,05** se rechaza la hipótesis nula y se acepta la alternativa, concluyendo así que si existe una  relación significativa entre las variables. 
+  + Si el **p valor es mayor que 0,05** se acepta la hupótesis nula y se rechaza la alternativa, concluyendo que no exite relación significativa entre las variables.
+
+
+```{r, echo=FALSE}
+table_migrated_diet <- table(mydata$Migrated, mydata$Diet)
+```
+
+```{r, echo=FALSE}
+knitr::kable(table_migrated_diet, caption = "Tabla de Contingencia: Migración por Dieta")
+```
+
+```{r, echo=FALSE}
+chi_test <- chisq.test(table_migrated_diet)
+```
+
+```{r, echo=FALSE}
+chi_test
+```
+
+En este caso, dado que el p valor es menor que 0,05 (p < 2.2e-16), rechazamos la hipótesis nula, lo que significa que sí existe una relación significativa entre la migración y la dieta en las especies de homínidos estudiadas.
+
+**En definitiva**: La migración de especies se asocia con cambios significativos en la dieta.
+
+## Conclusiones
+En este trabajo, se exploran tres hipótesis a cerca de la evolución de los homínidos en relación con la geografía, la capacidad craneal y la migración.
+
+La **primera hipótesis** demostró que si existen variaciones en la capacidad craneal relacionadas con las distintas zonas que habitaron las distintas especies de homínidos, mostrando valores más altos en las zonas: central y oeste las cuáles a su vez correspondían conlas especies de homínidos modernas.
+
+**En segundo lugar** con respecto a la capacidad craneal y el desarrollo tecnológico, los resultados sugieren que las especies con mayor capacidad craneal desarrollaron tecnologías más avanzadas, lo que apunta a una conexión entre la capacidad cognitiva y la creación de herramientas complejas.
+
+**Finalmente**, la hipótesis sobre la migración y los cambios en la dieta mostró que la migración de especies estuvo asociada con ajustes en sus dietas, impulsados por la disponibilidad de recursos en nuevas áreas. Estos cambios alimenticios podrían haber influido en la adaptación de las especies a diferentes entornos.
+
+En resumen, los resultados confirmaron algunos aspectos de las hipótesis y dejaron claro que la evolución humana está influenciada por una interacción compleja entre factores ambientales, morfológicos y conductuales.
+
+## Referencias
+
+Para llevar a cabo el análisis usamos R [@R-base] con las librerías dplyr [@R-dplyr] y ggplot2 [@R-ggplot2; @ggplot22016]. Para la creación de este informe hemos utilizado el paquete knitr [@R-knitr; @knitr2015; @knitr2014].
+
+Los datos analizados en este trabajo provienen del archivo titulado *Biological Data Of Human* [@EvolutionData].
+
+## Información de la sesión
+
+```{r sessionInfo, echo=FALSE}
+session <- sessionInfo()
+print(session)
+```
+
+
